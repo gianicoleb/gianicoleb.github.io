@@ -13,9 +13,9 @@ pygame.display.set_caption("Energy Matching Game")
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (100, 149, 237)
-GREEN = (34, 139, 34)
-RED = (200, 50, 50)
-LINE_COLOR = (0, 0, 0)  # Black lines to connect matched pairs
+GREEN = (34, 139, 34)  # Correct match
+RED = (200, 50, 50)  # Incorrect match
+LINE_COLOR = (0, 0, 0)  # Default black lines
 
 # Font
 FONT = pygame.font.Font(None, 30)
@@ -58,6 +58,7 @@ energy_positions = [pygame.Rect(500, 50 + i * 30, 350, 40) for i in range(len(en
 dragging = None  # Stores index of item being dragged
 offset_x, offset_y = 0, 0  # Mouse offset for dragging
 matched_pairs = {}  # Stores correct matches (appliance index → energy index)
+incorrect_pairs = {}  # Stores incorrect matches (appliance index → correct energy index)
 score = 0
 
 # Game loop
@@ -93,7 +94,14 @@ while running:
     for appliance_idx, energy_idx in matched_pairs.items():
         appliance_rect = appliance_positions[appliance_idx]
         energy_rect = energy_positions[energy_idx]
-        pygame.draw.line(screen, LINE_COLOR, (appliance_rect.right, appliance_rect.centery),
+        pygame.draw.line(screen, GREEN, (appliance_rect.right, appliance_rect.centery),
+                         (energy_rect.left, energy_rect.centery), 3)
+
+    # Draw red lines for incorrect pairs
+    for appliance_idx, correct_energy_idx in incorrect_pairs.items():
+        appliance_rect = appliance_positions[appliance_idx]
+        energy_rect = energy_positions[correct_energy_idx]
+        pygame.draw.line(screen, RED, (appliance_rect.right, appliance_rect.centery),
                          (energy_rect.left, energy_rect.centery), 3)
 
     # Event handling
@@ -126,6 +134,9 @@ while running:
                             matched_pairs[dragging] = j  # Store correct match
                             score += 1
                         else:
+                            # Find the correct energy index for the incorrect match
+                            correct_energy_idx = energy_values.index(appliances[selected_appliance])
+                            incorrect_pairs[dragging] = correct_energy_idx  # Store incorrect match
                             print(f"❌ Incorrect: {selected_appliance} does not match {selected_energy}.")
 
                 dragging = None  # Reset dragging
