@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Matching Game</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        canvas {
+            margin-top: 20px;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Energy Matching Game</h1>
+    <p>Drag the appliances to their correct energy usage values.</p>
+
+    <script type="module">
+        import init from "./main.js";
+        init();
+    </script>
+
+    <p>Game not loading? <a href="#" onclick="location.reload();">Click here to reload.</a></p>
+</body>
+</html>
